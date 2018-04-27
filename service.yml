@@ -1,0 +1,29 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: proxy-to-storage
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: proxy-to-storage
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: proxy-to-storage
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: proxy-to-storage
+    spec:
+      containers:
+      - name: proxy
+        image: werehamster/proxy-to-storage:v1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 10m
